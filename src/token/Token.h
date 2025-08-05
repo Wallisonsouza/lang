@@ -5,25 +5,20 @@
 
 enum class TokenType { 
     Number, 
+    Type,
+    Keyword,
     Identifier, 
     Symbol, 
     Unknown, 
     EndOfFile 
 };
 
-enum class TokenSubType {
-    FunctionCall,
-    FunctionParamenter,
-    FunctioType
-
-};
-
 struct Token {
   TokenType type;
-  TokenSubType subType;
   std::string lexeme;
-  size_t position;
+  size_t end;
+  size_t start;
 
-  Token(TokenType t, std::string lex, size_t pos)
-      : type(t), lexeme(std::move(lex)), position(pos) {}
+  Token(TokenType token, std::string lexeme, size_t start, size_t end)
+      : type(token), lexeme(std::move(lexeme)), end(end), start(start) {}
 };

@@ -9,7 +9,7 @@ public:
     virtual ~IStream() = default;
 
     virtual T advance() = 0;
-    virtual T next() const = 0;
+     virtual T current() const = 0;
     virtual T previous() const = 0;
     virtual T peek(size_t offset = 0) const = 0;
 

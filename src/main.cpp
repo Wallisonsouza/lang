@@ -1,30 +1,32 @@
 #include "./lexer/Lexer.h"
 #include <iostream>
+#include <string>
 
-std::optional<Token> parseNumber(Stream<char> &stream) {
-  size_t startPos = stream.position();
-  std::string lexeme;
-
-  while (stream.hasNext() && std::isdigit(stream.next())) {
-    lexeme += stream.advance();
-  }
-
-  if (!lexeme.empty()) {
-    return Token(TokenType::Number, lexeme, startPos);
-  }
-
-  return std::nullopt;
-}
-
+#include "./lang/ParseKeyword.h"
+#include "./lang/ParseNumber.h"
+#include "./lang/ParseSymbols.h"
+#include "./lang/ParseType.h"
+#include "./lang/PaserIdentifier.h"
 
 int main() {
-    Lexer lexer("123 abc + 456");
-    lexer.addHandler(1, parseNumber);
-    auto tokens = lexer.tokenize();
+  Lexer lexer("const age: int = 10");
 
-    for (auto& token : tokens) {
-        std::cout << "Token: " << token.lexeme << " at " << token.position << "\n";
-    }
+  lexer.addHandler(0, parseNumber);
+  lexer.addHandler(1, parseKeyword);
+  lexer.addHandler(2, parseIdentifier);
+  lexer.addHandler(3, parseType);
+  lexer.addHandler(4, parseSymbol);
 
-    return 0;
+  auto tokens = lexer.tokenize();
+
+  for (auto &token : tokens) {
+    std::cout << "{\n";
+    std::cout << "  type: " << static_cast<int>(token.type) << "\n";
+    std::cout << "  lexeme: " << token.lexeme << "\n";
+    std::cout << "  start: " << token.start << "\n";
+    std::cout << "  end: " << token.end << "\n";
+    std::cout << "}\n";
+  }
+
+  return 0;
 }

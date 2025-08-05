@@ -46,9 +46,6 @@ public:
         stream.advance();
       }
     }
-
-    tokens.emplace_back(TokenType::EndOfFile, "", stream.position());
-
     return tokens;
   }
 
@@ -57,7 +54,7 @@ private:
   std::map<int, std::vector<TokenHandler>> tokenLayers;
 
   void skipWhitespace() {
-    while (stream.hasNext() && std::isspace(stream.next()))
+    while (stream.hasNext() && std::isspace(stream.current()))
       stream.advance();
   }
 };

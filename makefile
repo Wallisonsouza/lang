@@ -1,7 +1,7 @@
 TARGET = app
 
 CXX = g++
-CXXFLAGS = -std=c++17 -Wall -I./src
+CXXFLAGS = -std=c++20 -Wall -I./src
 LIBS =  -lm
 
 
