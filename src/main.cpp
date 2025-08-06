@@ -1,31 +1,28 @@
-#include "./lexer/Lexer.h"
-#include <iostream>
-#include <string>
+#include "./core/lexer/Lexer.h"
+#include "./core/token/Token.h"
 
-#include "./lang/ParseKeyword.h"
-#include "./lang/ParseNumber.h"
-#include "./lang/ParseSymbols.h"
-#include "./lang/ParseType.h"
-#include "./lang/PaserIdentifier.h"
+#include "./lang/lexer/ParseNumber.h"
+#include "./lang/lexer/ParseSymbols.h"
+#include "./lang/lexer/PaserIdentifier.h"
+
+#include "./lang/lexer/keyword/ParseKeyword.h"
+#include "./lang/lexer/operator/ParseOperator.h"
+#include "./lang/lexer/type/ParseType.h"
 
 int main() {
   Lexer lexer("const age: int = 10");
 
-  lexer.addHandler(0, parseNumber);
-  lexer.addHandler(1, parseKeyword);
-  lexer.addHandler(2, parseIdentifier);
-  lexer.addHandler(3, parseType);
-  lexer.addHandler(4, parseSymbol);
+  lexer.addHandler(0, tokenizeNumber);
+  lexer.addHandler(1, tokenizeKeyword);
+  lexer.addHandler(2, tokenizeType);
+  lexer.addHandler(3, tokenizeIdentifier);
+  lexer.addHandler(5, tokenizeOperator);
+  lexer.addHandler(4, tokenizeSymbol);
 
-  auto tokens = lexer.tokenize();
+  std::vector<Token> tokens = lexer.tokenize();
 
-  for (auto &token : tokens) {
-    std::cout << "{\n";
-    std::cout << "  type: " << static_cast<int>(token.type) << "\n";
-    std::cout << "  lexeme: " << token.lexeme << "\n";
-    std::cout << "  start: " << token.start << "\n";
-    std::cout << "  end: " << token.end << "\n";
-    std::cout << "}\n";
+  for (const Token &tok : tokens) {
+    tok.print();
   }
 
   return 0;
